@@ -10,4 +10,6 @@
 
 !cd.noCoinsState := noCoins
 !cd.hasCoinsState := hasCoins
-!cd.ebnoughCoinsState := enoughCoins
+!cd.enoughCoinsState := enoughCoins
+
+!cd.initInstance()

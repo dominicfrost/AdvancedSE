@@ -35,18 +35,18 @@ class CoffeeDispenser
 			states
 				startUp:initial
 
-				noCoins		[amount = 0]
+				noCoins		[currentState = noCoinsState]
 
-				hasCoins	[amount > 0]
+				hasCoins	[currentState = hasCoinsState]
 
-				enoughCoins	[amount >= 100]
+				enoughCoins	[currentState = enoughCoinsState]
 
 			transitions
 				startUp -> noCoins	{create}
 
-				noCoins -> hasCoins	{ [i > 0 and amount < 100] accept()}
+				noCoins -> hasCoins	{ [i > 0 and i < 100] accept()}
 
-				noCoins -> enoughCoins { [i > 0 and amount >= 100] accept()}
+				noCoins -> enoughCoins { [i >= 100] accept()}
 
 				hasCoins -> noCoins { reset() }
 
