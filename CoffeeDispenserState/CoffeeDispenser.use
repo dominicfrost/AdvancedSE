@@ -99,7 +99,7 @@ class NoCoins < CoffeeState
 
 		reset()
 		begin
-			self.dispenserState.amount:= 0;
+			self.dispenserState.amount := 0;
 		end
 end
 
@@ -117,11 +117,13 @@ class HasCoins < CoffeeState
 		brew()
 		begin
 			self.dispenserState.amount := 0;
+			self.dispenserState.currentState := self.dispenserState.noCoinsState;
 		end
 
 		reset()
 		begin
-			self.dispenserState.amount:= 0;
+			self.dispenserState.amount := 0;
+			self.dispenserState.currentState := self.dispenserState.noCoinsState;
 		end
 end
 
@@ -135,11 +137,13 @@ class EnoughCoins < CoffeeState
 		brew()
 		begin
 			self.dispenserState.amount := 0;
+			self.dispenserState.currentState := self.dispenserState.noCoinsState;
 		end
 
 		reset()
 		begin
-			self.dispenserState.amount:= 0;
+			self.dispenserState.amount := 0;
+			self.dispenserState.currentState := self.dispenserState.noCoinsState;
 		end
 end
 
