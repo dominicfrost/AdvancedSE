@@ -1,0 +1,56 @@
+model ObserverPattern
+
+class ISubject
+	attributes
+		myObs:ConcreteObserver
+
+	operations
+		attach(ob:ConcreteObserver)
+		detach(ob:ConcreteObserver)
+		notify()
+	end
+
+class IObserver
+	operations
+		update()	
+	end
+
+class ConcreteSubject < ISubject -- do not know how to show implements
+	attributes
+		subjectState : Integer init = 0
+
+	operations
+		attach(ob:ConcreteObserver)
+		begin
+			self.myObs := ob;
+		end
+		detach(ob:ConcreteObserver)
+		begin
+			self.myObs := null;
+		end
+		notify()
+		begin
+			self.myObs.update()
+		end
+	end
+
+class ConcreteObserver < IObserver
+	attributes
+		observerState : Integer	
+
+	operations
+		update()
+		begin
+			self.observerState := self.observerState + 1;
+		end
+	end
+
+association notifies between
+	ISubject[1] role notifier
+	IObserver[*] role recipient
+end
+
+association observes between
+	ConcreteObserver[1] role requester
+	ConcreteSubject[1] role decider
+end

@@ -1,0 +1,153 @@
+model CoffeeDispenser
+
+class CoffeeDispenser
+	attributes
+		amount : Integer init = 0
+		currentState : CoffeeState
+		noCoinsState : CoffeeState
+		hasCoinsState : CoffeeState
+		enoughCoinsState : CoffeeState
+
+	operations
+		initInstance()
+		begin
+			self.currentState := self.noCoinsState
+		end
+		
+		accept(i: Integer)
+		begin 
+			self.currentState.accept(i)
+		end
+
+		brew()
+		begin
+			self.currentState.brew()
+		end
+
+		reset()
+		begin
+			self.currentState.reset()
+		end
+	
+
+	statemachines
+		psm StateMachine
+			states
+				startUp:initial
+
+				noCoins		[amount = 0]
+
+				hasCoins	[amount > 0]
+
+				enoughCoins	[amount >= 100]
+
+			transitions
+				startUp -> noCoins	{create}
+
+				noCoins -> hasCoins	{ [i > 0 and amount < 100] accept()}
+
+				noCoins -> enoughCoins { [i > 0 and amount >= 100] accept()}
+
+				hasCoins -> noCoins { reset() }
+
+				hasCoins -> hasCoins {[((i + self.amount) < 100)] accept()}
+
+				hasCoins -> enoughCoins {[((i + self.amount) >= 100)] accept()}
+
+				enoughCoins -> noCoins {reset()}
+
+				enoughCoins -> noCoins {brew()}
+			end	
+		end
+
+
+class CoffeeState
+	operations
+		accept(i:Integer)
+		begin
+		end
+		
+		pre: let validCoins = Set{10, 20, 50, 100, 200} in validCoins->includes(i)
+		
+		brew()
+		begin
+		end
+
+		reset()
+		begin
+		end
+	
+end
+
+class NoCoins < CoffeeState
+	operations
+		accept(i:Integer)
+		begin
+			self.dispenserState.amount := self.dispenserState.amount + i;
+
+			if self.dispenserState.amount > 100 then
+				self.dispenserState.currentState := self.dispenserState.enoughCoinsState;
+			else
+				self.dispenserState.currentState := self.dispenserState.hasCoinsState;
+			end;			
+		end
+		
+		brew()
+		begin
+			self.dispenserState.amount := 0;
+		end
+
+		reset()
+		begin
+			self.dispenserState.amount:= 0;
+		end
+end
+
+class HasCoins < CoffeeState
+	operations
+		accept(i:Integer)
+		begin
+			self.dispenserState.amount := self.dispenserState.amount + i;
+
+			if self.dispenserState.amount > 100 then
+				self.dispenserState.currentState := self.dispenserState.enoughCoinsState;	
+			end;		
+		end
+		
+		brew()
+		begin
+			self.dispenserState.amount := 0;
+		end
+
+		reset()
+		begin
+			self.dispenserState.amount:= 0;
+		end
+end
+
+class EnoughCoins < CoffeeState
+	operations
+		accept(i:Integer)
+		begin
+			self.dispenserState.amount := self.dispenserState.amount + i;			
+		end
+		
+		brew()
+		begin
+			self.dispenserState.amount := 0;
+		end
+
+		reset()
+		begin
+			self.dispenserState.amount:= 0;
+		end
+end
+
+
+association dispenserState between 
+CoffeeState[*] role coffeeState
+CoffeeDispenser [1] role dispenserState
+end
+
+
+

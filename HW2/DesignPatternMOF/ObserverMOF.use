@@ -1,0 +1,114 @@
+model ModelElement
+
+-- classes
+class ModelElement
+attributes
+	name: String
+end
+
+class Classifier < ModelElement
+end
+
+class Feature < ModelElement
+attributes
+	visibility: String
+end
+
+class Class < Classifier
+end
+
+class DataType < Classifier
+end
+
+class Interface < Classifier
+end
+
+class Attribute < Feature
+end
+
+class AssociationEnd < Feature
+end
+
+class Operation < Feature
+end
+
+class Parameter
+end
+
+class Association
+end
+
+class ISubject < Interface		
+end
+
+class IObserver < Interface
+end
+
+class ConcreteSubject < Class
+end
+
+class ConcreteObserver < Class
+end
+
+class Notifies < Association
+end
+
+class Observes < Association
+end
+
+class Update < Operation
+end
+
+class Notify < Operation
+end
+
+class Attach < Operation
+end
+
+class Detatch < Operation
+end
+
+class ObserverState < Attribute
+end
+
+class SubjectState < Attribute
+end
+
+-- associations
+
+association one between
+	Classifier[*] role generalizations
+	Classifier[*] role specializations
+end
+
+association two between
+	Classifier[1] role type
+	Feature[*] role feature
+end
+
+association three between
+	Interface[*] role implementedInterfaces
+	Class[*] role interface
+end
+
+association four between
+	 Operation[1] role operation
+	 Parameter[*] role parameter
+end
+
+association five between
+	AssociationEnd[2..*] role association
+	Association[1] role associationEnd
+end
+
+association six between
+	Classifier[1] role type
+	Parameter[*] role parameter
+end
+
+composition seven between
+	Classifier[1] role classifier
+	Feature[1..*] role features
+end
+
+
