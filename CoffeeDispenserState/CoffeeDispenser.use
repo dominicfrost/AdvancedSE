@@ -4,29 +4,29 @@ class CoffeeDispenser
 	attributes
 		amount : Integer init = 0
 		currentState : CoffeeState
-		noCoinsState : CoffeeState
-		hasCoinsState : CoffeeState
-		enoughCoinsState : CoffeeState
+		noCoinsState : NoCoins
+		hasCoinsState : HasCoins
+		enoughCoinsState : EnoughCoins
 
 	operations
 		initInstance()
 		begin
-			self.currentState := self.noCoinsState
+			self.currentState := self.noCoinsState;
 		end
 		
 		accept(i: Integer)
 		begin 
-			self.currentState.accept(i)
+			self.currentState.accept(i);
 		end
 
 		brew()
 		begin
-			self.currentState.brew()
+			self.currentState.brew();
 		end
 
 		reset()
 		begin
-			self.currentState.reset()
+			self.currentState.reset();
 		end
 	
 
@@ -144,7 +144,7 @@ class EnoughCoins < CoffeeState
 end
 
 
-association dispenserState between 
+association DispenserState between 
 CoffeeState[*] role coffeeState
 CoffeeDispenser [1] role dispenserState
 end
