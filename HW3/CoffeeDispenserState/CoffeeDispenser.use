@@ -48,9 +48,15 @@ class CoffeeDispenser
 
 				noCoins -> enoughCoins { [i >= 100 and currentState = noCoinsState] accept()}
 
+				noCoins -> noCoins {[currentState = noCoinsState] reset()}
+
+				noCoins -> noCoins {[currentState = noCoinsState] brew()}
+
 				hasCoins -> noCoins { [currentState = hasCoinsState] reset() }
 
-				hasCoins -> hasCoins {[((i + self.amount) < 100) and currentState =hasCoinsState] accept()}
+				hasCoins -> hasCoins {[((i + self.amount) < 100) and currentState = hasCoinsState] accept()}
+
+				hasCoins -> hasCoins {[currentState = hasCoinsState] brew()}
 
 				hasCoins -> enoughCoins {[((i + self.amount) >= 100) and currentState = hasCoinsState] accept()}
 
@@ -94,12 +100,11 @@ class NoCoins < CoffeeState
 		
 		brew()
 		begin
-			self.dispenserState.amount := 0;
+			WriteLine('You do not have enough coins')
 		end
 
 		reset()
 		begin
-			self.dispenserState.amount := 0;
 		end
 end
 
@@ -116,8 +121,7 @@ class HasCoins < CoffeeState
 		
 		brew()
 		begin
-			self.dispenserState.amount := 0;
-			self.dispenserState.currentState := self.dispenserState.noCoinsState;
+			WriteLine('You do not have enough coins')
 		end
 
 		reset()
