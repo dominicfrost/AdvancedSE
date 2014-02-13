@@ -44,19 +44,19 @@ class CoffeeDispenser
 			transitions
 				startUp -> noCoins	{create}
 
-				noCoins -> hasCoins	{ [i > 0 and i < 100] accept()}
+				noCoins -> hasCoins	{ [i > 0 and i < 100 and currentState = noCoinsState] accept()}
 
-				noCoins -> enoughCoins { [i >= 100] accept()}
+				noCoins -> enoughCoins { [i >= 100 and currentState = noCoinsState] accept()}
 
-				hasCoins -> noCoins { reset() }
+				hasCoins -> noCoins { [currentState = hasCoinsState] reset() }
 
-				hasCoins -> hasCoins {[((i + self.amount) < 100)] accept()}
+				hasCoins -> hasCoins {[((i + self.amount) < 100) and currentState =hasCoinsState] accept()}
 
-				hasCoins -> enoughCoins {[((i + self.amount) >= 100)] accept()}
+				hasCoins -> enoughCoins {[((i + self.amount) >= 100) and currentState = hasCoinsState] accept()}
 
-				enoughCoins -> noCoins {reset()}
+				enoughCoins -> noCoins {[currentState = enoughCoinsState] reset()}
 
-				enoughCoins -> noCoins {brew()}
+				enoughCoins -> noCoins {[currentState = enoughCoinsState] brew()}
 			end	
 		end
 

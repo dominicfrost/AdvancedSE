@@ -13,7 +13,7 @@
   <node id="hasCoins" sizeCalculated="true" type="StateNode">
     <name>hasCoins</name>
     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-      <x>648.669365296631</x>
+      <x>807.669365296631</x>
       <y>94.9266630866797</y>
     </strategy>
     <showInvariant>true</showInvariant>
@@ -44,15 +44,6 @@
     </node>
     <hidden>false</hidden>
   </node>
-  <node id="enoughCoins" sizeCalculated="true" type="StateNode">
-    <name>enoughCoins</name>
-    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-      <x>371.79545521909284</x>
-      <y>427.58375473067815</y>
-    </strategy>
-    <showInvariant>true</showInvariant>
-    <hidden>false</hidden>
-  </node>
   <node id="noCoins" sizeCalculated="true" type="StateNode">
     <name>noCoins</name>
     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
@@ -62,10 +53,233 @@
     <showInvariant>true</showInvariant>
     <hidden>false</hidden>
   </node>
+  <node id="enoughCoins" sizeCalculated="true" type="StateNode">
+    <name>enoughCoins</name>
+    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+      <x>371.79545521909284</x>
+      <y>427.58375473067815</y>
+    </strategy>
+    <showInvariant>true</showInvariant>
+    <hidden>false</hidden>
+  </node>
+  <edge type="Transition">
+    <source>startUp</source>
+    <target>noCoins</target>
+    <name>create/</name>
+    <waypoints>
+      <edgeproperty id="transition::startUp::noCoins::::WayPoint::0"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>0</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>0</id>
+        <specialid>1</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+      <edgeproperty id="transition::startUp::noCoins::::WayPoint::1"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>1</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>1</id>
+        <specialid>2</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+    </waypoints>
+    <hidden>false</hidden>
+    <Transitions>
+      <Transition>
+        <trigger>create</trigger>
+        <guard/>
+        <post/>
+        <edgeproperty id="create/" sizeCalculated="true"
+          type="TransitionLabel" userDefined="false" visible="true">
+          <name>create/</name>
+          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+            <userOffsetX>0.0</userOffsetX>
+            <userOffsetY>0.0</userOffsetY>
+            <offsetX>0.0</offsetX>
+            <offsetY>10.0</offsetY>
+            <related length="2">
+              <related0>transition::startUp::noCoins::::WayPoint::0</related0>
+              <related1>transition::startUp::noCoins::::WayPoint::1</related1>
+            </related>
+          </strategy>
+          <hidden>false</hidden>
+        </edgeproperty>
+      </Transition>
+    </Transitions>
+  </edge>
+  <edge type="Transition">
+    <source>noCoins</source>
+    <target>hasCoins</target>
+    <name>[(((i &gt; 0) and (i &lt; 100)) and (self.currentState = self.noCoinsState))] accept(i : Integer)/</name>
+    <waypoints>
+      <edgeproperty id="transition::noCoins::hasCoins::::WayPoint::0"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>0</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>0</id>
+        <specialid>1</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+      <edgeproperty id="transition::noCoins::hasCoins::::WayPoint::1"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>1</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>1</id>
+        <specialid>2</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+    </waypoints>
+    <hidden>false</hidden>
+    <Transitions>
+      <Transition>
+        <trigger>accept(i : Integer)</trigger>
+        <guard>(((i &gt; 0) and (i &lt; 100)) and (self.currentState = self.noCoinsState))</guard>
+        <post/>
+        <edgeproperty
+          id="[(((i > 0) and (i &lt; 100)) and (self.currentState = self.noCoinsState))] accept(i : Integer)/"
+          sizeCalculated="true" type="TransitionLabel"
+          userDefined="true" visible="true">
+          <name>[(((i &gt; 0) and (i &lt; 100)) and (self.currentState = self.noCoinsState))] accept(i : Integer)/</name>
+          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+            <userOffsetX>3.0</userOffsetX>
+            <userOffsetY>1.0</userOffsetY>
+            <offsetX>0.0</offsetX>
+            <offsetY>10.0</offsetY>
+            <related length="2">
+              <related0>transition::noCoins::hasCoins::::WayPoint::0</related0>
+              <related1>transition::noCoins::hasCoins::::WayPoint::1</related1>
+            </related>
+          </strategy>
+          <hidden>false</hidden>
+        </edgeproperty>
+      </Transition>
+    </Transitions>
+  </edge>
+  <edge type="Transition">
+    <source>enoughCoins</source>
+    <target>noCoins</target>
+    <name>[(self.currentState = self.enoughCoinsState)] brew()/</name>
+    <waypoints>
+      <edgeproperty id="transition::enoughCoins::noCoins::::WayPoint::0"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>0</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>0</id>
+        <specialid>1</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+      <edgeproperty id="transition::enoughCoins::noCoins::::WayPoint::1"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>1</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>1</id>
+        <specialid>2</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+    </waypoints>
+    <hidden>false</hidden>
+    <Transitions>
+      <Transition>
+        <trigger>brew()</trigger>
+        <guard>(self.currentState = self.enoughCoinsState)</guard>
+        <post/>
+        <edgeproperty
+          id="[(self.currentState = self.enoughCoinsState)] brew()/"
+          sizeCalculated="true" type="TransitionLabel"
+          userDefined="true" visible="true">
+          <name>[(self.currentState = self.enoughCoinsState)] brew()/</name>
+          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+            <userOffsetX>22.0</userOffsetX>
+            <userOffsetY>20.0</userOffsetY>
+            <offsetX>0.0</offsetX>
+            <offsetY>10.0</offsetY>
+            <related length="2">
+              <related0>transition::enoughCoins::noCoins::::WayPoint::0</related0>
+              <related1>transition::enoughCoins::noCoins::::WayPoint::1</related1>
+            </related>
+          </strategy>
+          <hidden>false</hidden>
+        </edgeproperty>
+      </Transition>
+    </Transitions>
+  </edge>
+  <edge type="Transition">
+    <source>noCoins</source>
+    <target>enoughCoins</target>
+    <name>[((i &gt;= 100) and (self.currentState = self.noCoinsState))] accept(i : Integer)/</name>
+    <waypoints>
+      <edgeproperty id="transition::noCoins::enoughCoins::::WayPoint::0"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>0</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>0</id>
+        <specialid>1</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+      <edgeproperty id="transition::noCoins::enoughCoins::::WayPoint::1"
+        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
+        <name>1</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+          <userOffsetX>0.0</userOffsetX>
+          <userOffsetY>0.0</userOffsetY>
+        </strategy>
+        <id>1</id>
+        <specialid>2</specialid>
+        <hidden>false</hidden>
+      </edgeproperty>
+    </waypoints>
+    <hidden>false</hidden>
+    <Transitions>
+      <Transition>
+        <trigger>accept(i : Integer)</trigger>
+        <guard>((i &gt;= 100) and (self.currentState = self.noCoinsState))</guard>
+        <post/>
+        <edgeproperty
+          id="[((i >= 100) and (self.currentState = self.noCoinsState))] accept(i : Integer)/"
+          sizeCalculated="true" type="TransitionLabel"
+          userDefined="true" visible="true">
+          <name>[((i &gt;= 100) and (self.currentState = self.noCoinsState))] accept(i : Integer)/</name>
+          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+            <userOffsetX>-105.0</userOffsetX>
+            <userOffsetY>114.0</userOffsetY>
+            <offsetX>0.0</offsetX>
+            <offsetY>10.0</offsetY>
+            <related length="2">
+              <related0>transition::noCoins::enoughCoins::::WayPoint::0</related0>
+              <related1>transition::noCoins::enoughCoins::::WayPoint::1</related1>
+            </related>
+          </strategy>
+          <hidden>false</hidden>
+        </edgeproperty>
+      </Transition>
+    </Transitions>
+  </edge>
   <edge type="Transition">
     <source>hasCoins</source>
     <target>hasCoins</target>
-    <name>[((i + self.amount) &lt; 100)] accept(i : Integer)/</name>
+    <name>[(((i + self.amount) &lt; 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/</name>
     <waypoints>
       <edgeproperty id="transition::hasCoins::hasCoins::::WayPoint::0"
         sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
@@ -168,13 +382,13 @@
     <Transitions>
       <Transition>
         <trigger>accept(i : Integer)</trigger>
-        <guard>((i + self.amount) &lt; 100)</guard>
+        <guard>(((i + self.amount) &lt; 100) and (self.currentState = self.hasCoinsState))</guard>
         <post/>
         <edgeproperty
-          id="[((i + self.amount) &lt; 100)] accept(i : Integer)/"
+          id="[(((i + self.amount) &lt; 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/"
           sizeCalculated="true" type="TransitionLabel"
           userDefined="true" visible="true">
-          <name>[((i + self.amount) &lt; 100)] accept(i : Integer)/</name>
+          <name>[(((i + self.amount) &lt; 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/</name>
           <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
             <userOffsetX>-2.0</userOffsetX>
             <userOffsetY>-76.0</userOffsetY>
@@ -191,167 +405,9 @@
     </Transitions>
   </edge>
   <edge type="Transition">
-    <source>enoughCoins</source>
-    <target>noCoins</target>
-    <name>brew()/</name>
-    <waypoints>
-      <edgeproperty id="transition::enoughCoins::noCoins::::WayPoint::0"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>0</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>0</id>
-        <specialid>1</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-      <edgeproperty id="transition::enoughCoins::noCoins::::WayPoint::1"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>1</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>1</id>
-        <specialid>2</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-    </waypoints>
-    <hidden>false</hidden>
-    <Transitions>
-      <Transition>
-        <trigger>brew()</trigger>
-        <guard/>
-        <post/>
-        <edgeproperty id="brew()/" sizeCalculated="true"
-          type="TransitionLabel" userDefined="true" visible="true">
-          <name>brew()/</name>
-          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>32.0</userOffsetX>
-            <userOffsetY>35.0</userOffsetY>
-            <offsetX>0.0</offsetX>
-            <offsetY>10.0</offsetY>
-            <related length="2">
-              <related0>transition::enoughCoins::noCoins::::WayPoint::0</related0>
-              <related1>transition::enoughCoins::noCoins::::WayPoint::1</related1>
-            </related>
-          </strategy>
-          <hidden>false</hidden>
-        </edgeproperty>
-      </Transition>
-    </Transitions>
-  </edge>
-  <edge type="Transition">
-    <source>hasCoins</source>
-    <target>noCoins</target>
-    <name>reset()/</name>
-    <waypoints>
-      <edgeproperty id="transition::hasCoins::noCoins::::WayPoint::0"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>0</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>0</id>
-        <specialid>1</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-      <edgeproperty id="transition::hasCoins::noCoins::::WayPoint::1"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>1</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>1</id>
-        <specialid>2</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-    </waypoints>
-    <hidden>false</hidden>
-    <Transitions>
-      <Transition>
-        <trigger>reset()</trigger>
-        <guard/>
-        <post/>
-        <edgeproperty id="reset()/" sizeCalculated="true"
-          type="TransitionLabel" userDefined="true" visible="true">
-          <name>reset()/</name>
-          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>25.0</userOffsetX>
-            <userOffsetY>-22.0</userOffsetY>
-            <offsetX>0.0</offsetX>
-            <offsetY>10.0</offsetY>
-            <related length="2">
-              <related0>transition::hasCoins::noCoins::::WayPoint::0</related0>
-              <related1>transition::hasCoins::noCoins::::WayPoint::1</related1>
-            </related>
-          </strategy>
-          <hidden>false</hidden>
-        </edgeproperty>
-      </Transition>
-    </Transitions>
-  </edge>
-  <edge type="Transition">
-    <source>noCoins</source>
-    <target>hasCoins</target>
-    <name>[((i &gt; 0) and (self.amount &lt; 100))] accept(i : Integer)/</name>
-    <waypoints>
-      <edgeproperty id="transition::noCoins::hasCoins::::WayPoint::0"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>0</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>0</id>
-        <specialid>1</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-      <edgeproperty id="transition::noCoins::hasCoins::::WayPoint::1"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>1</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>1</id>
-        <specialid>2</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-    </waypoints>
-    <hidden>false</hidden>
-    <Transitions>
-      <Transition>
-        <trigger>accept(i : Integer)</trigger>
-        <guard>((i &gt; 0) and (self.amount &lt; 100))</guard>
-        <post/>
-        <edgeproperty
-          id="[((i > 0) and (self.amount &lt; 100))] accept(i : Integer)/"
-          sizeCalculated="true" type="TransitionLabel"
-          userDefined="true" visible="true">
-          <name>[((i &gt; 0) and (self.amount &lt; 100))] accept(i : Integer)/</name>
-          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>3.0</userOffsetX>
-            <userOffsetY>1.0</userOffsetY>
-            <offsetX>0.0</offsetX>
-            <offsetY>10.0</offsetY>
-            <related length="2">
-              <related0>transition::noCoins::hasCoins::::WayPoint::0</related0>
-              <related1>transition::noCoins::hasCoins::::WayPoint::1</related1>
-            </related>
-          </strategy>
-          <hidden>false</hidden>
-        </edgeproperty>
-      </Transition>
-    </Transitions>
-  </edge>
-  <edge type="Transition">
     <source>hasCoins</source>
     <target>enoughCoins</target>
-    <name>[((i + self.amount) &gt;= 100)] accept(i : Integer)/</name>
+    <name>[(((i + self.amount) &gt;= 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/</name>
     <waypoints>
       <edgeproperty
         id="transition::hasCoins::enoughCoins::::WayPoint::0"
@@ -382,16 +438,16 @@
     <Transitions>
       <Transition>
         <trigger>accept(i : Integer)</trigger>
-        <guard>((i + self.amount) &gt;= 100)</guard>
+        <guard>(((i + self.amount) &gt;= 100) and (self.currentState = self.hasCoinsState))</guard>
         <post/>
         <edgeproperty
-          id="[((i + self.amount) >= 100)] accept(i : Integer)/"
+          id="[(((i + self.amount) >= 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/"
           sizeCalculated="true" type="TransitionLabel"
           userDefined="true" visible="true">
-          <name>[((i + self.amount) &gt;= 100)] accept(i : Integer)/</name>
+          <name>[(((i + self.amount) &gt;= 100) and (self.currentState = self.hasCoinsState))] accept(i : Integer)/</name>
           <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>66.0</userOffsetX>
-            <userOffsetY>77.0</userOffsetY>
+            <userOffsetX>134.0</userOffsetX>
+            <userOffsetY>107.0</userOffsetY>
             <offsetX>0.0</offsetX>
             <offsetY>10.0</offsetY>
             <related length="2">
@@ -405,11 +461,11 @@
     </Transitions>
   </edge>
   <edge type="Transition">
-    <source>noCoins</source>
-    <target>enoughCoins</target>
-    <name>[((i &gt; 0) and (self.amount &gt;= 100))] accept(i : Integer)/</name>
+    <source>hasCoins</source>
+    <target>noCoins</target>
+    <name>[(self.currentState = self.hasCoinsState)] reset()/</name>
     <waypoints>
-      <edgeproperty id="transition::noCoins::enoughCoins::::WayPoint::0"
+      <edgeproperty id="transition::hasCoins::noCoins::::WayPoint::0"
         sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
         <name>0</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
@@ -420,7 +476,7 @@
         <specialid>1</specialid>
         <hidden>false</hidden>
       </edgeproperty>
-      <edgeproperty id="transition::noCoins::enoughCoins::::WayPoint::1"
+      <edgeproperty id="transition::hasCoins::noCoins::::WayPoint::1"
         sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
         <name>1</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
@@ -435,74 +491,22 @@
     <hidden>false</hidden>
     <Transitions>
       <Transition>
-        <trigger>accept(i : Integer)</trigger>
-        <guard>((i &gt; 0) and (self.amount &gt;= 100))</guard>
+        <trigger>reset()</trigger>
+        <guard>(self.currentState = self.hasCoinsState)</guard>
         <post/>
         <edgeproperty
-          id="[((i > 0) and (self.amount >= 100))] accept(i : Integer)/"
+          id="[(self.currentState = self.hasCoinsState)] reset()/"
           sizeCalculated="true" type="TransitionLabel"
           userDefined="true" visible="true">
-          <name>[((i &gt; 0) and (self.amount &gt;= 100))] accept(i : Integer)/</name>
+          <name>[(self.currentState = self.hasCoinsState)] reset()/</name>
           <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>-64.0</userOffsetX>
-            <userOffsetY>112.0</userOffsetY>
+            <userOffsetX>25.0</userOffsetX>
+            <userOffsetY>-22.0</userOffsetY>
             <offsetX>0.0</offsetX>
             <offsetY>10.0</offsetY>
             <related length="2">
-              <related0>transition::noCoins::enoughCoins::::WayPoint::0</related0>
-              <related1>transition::noCoins::enoughCoins::::WayPoint::1</related1>
-            </related>
-          </strategy>
-          <hidden>false</hidden>
-        </edgeproperty>
-      </Transition>
-    </Transitions>
-  </edge>
-  <edge type="Transition">
-    <source>startUp</source>
-    <target>noCoins</target>
-    <name>create/</name>
-    <waypoints>
-      <edgeproperty id="transition::startUp::noCoins::::WayPoint::0"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>0</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>0</id>
-        <specialid>1</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-      <edgeproperty id="transition::startUp::noCoins::::WayPoint::1"
-        sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
-        <name>1</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-          <userOffsetX>0.0</userOffsetX>
-          <userOffsetY>0.0</userOffsetY>
-        </strategy>
-        <id>1</id>
-        <specialid>2</specialid>
-        <hidden>false</hidden>
-      </edgeproperty>
-    </waypoints>
-    <hidden>false</hidden>
-    <Transitions>
-      <Transition>
-        <trigger>create</trigger>
-        <guard/>
-        <post/>
-        <edgeproperty id="create/" sizeCalculated="true"
-          type="TransitionLabel" userDefined="false" visible="true">
-          <name>create/</name>
-          <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>0.0</userOffsetX>
-            <userOffsetY>0.0</userOffsetY>
-            <offsetX>0.0</offsetX>
-            <offsetY>10.0</offsetY>
-            <related length="2">
-              <related0>transition::startUp::noCoins::::WayPoint::0</related0>
-              <related1>transition::startUp::noCoins::::WayPoint::1</related1>
+              <related0>transition::hasCoins::noCoins::::WayPoint::0</related0>
+              <related1>transition::hasCoins::noCoins::::WayPoint::1</related1>
             </related>
           </strategy>
           <hidden>false</hidden>
@@ -513,7 +517,7 @@
   <edge type="Transition">
     <source>enoughCoins</source>
     <target>noCoins</target>
-    <name>reset()/</name>
+    <name>[(self.currentState = self.enoughCoinsState)] reset()/</name>
     <waypoints>
       <edgeproperty id="transition::enoughCoins::noCoins::::WayPoint::0"
         sizeCalculated="true" type="WayPoint" userDefined="false" visible="true">
@@ -542,14 +546,16 @@
     <Transitions>
       <Transition>
         <trigger>reset()</trigger>
-        <guard/>
+        <guard>(self.currentState = self.enoughCoinsState)</guard>
         <post/>
-        <edgeproperty id="reset()/" sizeCalculated="true"
-          type="TransitionLabel" userDefined="true" visible="true">
-          <name>reset()/</name>
+        <edgeproperty
+          id="[(self.currentState = self.enoughCoinsState)] reset()/"
+          sizeCalculated="true" type="TransitionLabel"
+          userDefined="true" visible="true">
+          <name>[(self.currentState = self.enoughCoinsState)] reset()/</name>
           <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-            <userOffsetX>81.0</userOffsetX>
-            <userOffsetY>63.0</userOffsetY>
+            <userOffsetX>73.0</userOffsetX>
+            <userOffsetY>-106.0</userOffsetY>
             <offsetX>0.0</offsetX>
             <offsetY>10.0</offsetY>
             <related length="2">
