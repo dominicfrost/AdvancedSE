@@ -1,4 +1,4 @@
-model FPS
+model FPSPlayer
 
 class FPSPlayer
 	attributes
@@ -13,7 +13,7 @@ class FPSPlayer
 	operations
 		initInstance()
 		begin
-			self.currentState := self.attackState;
+			self.currentState := self.neutralState;
 		end
 		
 		subtractHealth(i: Integer)
@@ -89,12 +89,17 @@ class Attack < PlayerState
 	operations
 		subtractHealth(i:Integer)
 		begin
-			self.pstate.health := self.pstate.health-i;
+			self.pstate.health := self.pstate.health - i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			else if self.pstate.health <= 10 then
+				self.pstate.currentState := self.pstate.panicState;
+			end;end;
 		end
 		
 		regenHealth(i : Integer)
 		begin
-			self.pstate.health := self.pstate.health	+ i;
+			self.pstate.health := self.pstate.health + i;
 		end
 
 		makeMove()
@@ -107,12 +112,17 @@ class Neutral < PlayerState
 	operations
 		subtractHealth(i:Integer)
 		begin
-			self.pstate.health := self.pstate.health	- i;
+			self.pstate.health := self.pstate.health - i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			else if self.pstate.health <= 10 then
+				self.pstate.currentState := self.pstate.panicState;
+			end;end;
 		end
 		
 		regenHealth(i : Integer)
 		begin
-			self.pstate.health := self.pstate.health	+ i;
+			self.pstate.health := self.pstate.health + i;
 		end
 
 		makeMove()
@@ -126,6 +136,9 @@ class Panic < PlayerState
 		subtractHealth(i:Integer)
 		begin
 			self.pstate.health := self.pstate.health	- i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			end;
 		end
 		
 		regenHealth(i : Integer)
@@ -165,11 +178,6 @@ class Location
 	attributes
 		x : Integer;
 		y : Integer;
-	operations
-		getViewFromLoc()
-		begin
-			--result := Bag{Location(x+1,y+1),Location(x-1,y+1),Location(x,y+1)}
-		end
 end
 
 class Opponent
@@ -208,3 +216,6 @@ FPSPlayer[0..1] role playerOnLoc
 Location[1] role playerLocation
 end
 
+constraints
+
+--context FPSPlayer inv heche:playersView.locationsInView->includesAll(Bag{new Location(1,1)})
