@@ -50,19 +50,19 @@ class FPSPlayer
 
 				Neutral -> Attack {[currentState = neutralState and self.playersView.locationsInView->size() > 0] makeMove()}
 
-				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10)] subtractHealth()}
+				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth()}
 
 				Neutral -> Dead { [currentState = neutralState and ((self.health - i) <= 0)] subtractHealth()}
 
 				Attack -> Neutral { [currentState = attackState and self.playersView.locationsInView->size() = 0] subtractHealth()}
 
-				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10)] subtractHealth() }
+				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth() }
 
 				Attack -> Dead { [currentState = attackState and ((self.health - i) <= 0)] subtractHealth()}
 
-				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() > 0] regenHealth()}
+				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() = 0] regenHealth()}
 
-				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() = 0] regenHealth()}
+				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() > 0] regenHealth()}
 
 				Panic -> Dead { [currentState = panicState and ((self.health - i) <= 0)] subtractHealth()}
 			end	
@@ -178,6 +178,8 @@ class Location
 	attributes
 		x : Integer;
 		y : Integer;
+	operations
+		setLocation(xval : Integer, yval : Integer)
 end
 
 class Opponent
