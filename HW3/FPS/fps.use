@@ -178,12 +178,6 @@ class Location
 	attributes
 		x : Integer;
 		y : Integer;
-	operations
-		setLocation(xval : Integer, yval : Integer)
-		begin
-			x := xval
-			y := yval
-		end
 end
 
 class Opponent
