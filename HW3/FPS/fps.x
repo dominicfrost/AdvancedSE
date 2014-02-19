@@ -5,7 +5,6 @@
 !create attack : Attack
 !create dead : Dead
 
--- association between states back to the coffe dispenser
 !insert (currentState, player) into playerState
 !insert (neutral, player) into playerState
 !insert (panic, player) into playerState
@@ -20,7 +19,6 @@
 !create attackOpp : Attack
 !create deadOpp : Dead
 
--- association between states back to the coffe dispenser
 !insert (currentStateOpp, opponent) into playerState
 !insert (neutralOpp, opponent) into playerState
 !insert (panicOpp, opponent) into playerState
@@ -28,7 +26,6 @@
 !insert (deadOpp, opponent) into playerState
 
 
---create the players current position and the locations it can view
 !create ploc : Location
 !create viewLoc : Location
 !create pview : View
@@ -36,7 +33,6 @@
 !insert (pview, viewLoc) into ViewLocations
 !insert (player, ploc) into characterLocation
 
---create the players current position and the locations it can view
 !create plocOpp : Location
 !create viewLocOpp : Location
 !create pviewOpp : View
