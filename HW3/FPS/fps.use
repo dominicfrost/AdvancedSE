@@ -86,6 +86,14 @@ class Character
 				Panic -> Panic {[currentState = panicState and ((self.health - i) > 0) and ((self.health - i) <= 10)] subtractHealth()}
 
 				Panic -> Panic {[currentState = panicState and ((self.health + i) > 0) and ((self.health + i) <= 10)] regenHealth()}
+
+				Dead -> Dead {[currentState = deadState] regenHealth()}
+
+				Dead -> Dead {[currentState = deadState] subtractHealth()}
+
+				Dead -> Dead {[currentState = deadState] detectEnemies()}
+
+				Dead -> Dead {[currentState = deadState] enemyGone()}
 			end	
 		end
 
