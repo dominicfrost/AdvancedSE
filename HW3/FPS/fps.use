@@ -1,6 +1,6 @@
 model FPSPlayer
 
-class FPSPlayer
+class Character
 	attributes
 		health : Integer init = 100
 		enemiesNear : Integer init = 0
@@ -30,6 +30,11 @@ class FPSPlayer
 		begin
 			self.currentState.makeMove();
 		end
+
+		detectEnemies()
+		begin
+			self.currentState.detectEnemies();
+		end
 	
 
 	statemachines
@@ -48,26 +53,28 @@ class FPSPlayer
 			transitions
 				startUp -> Neutral	{create}
 
-				Neutral -> Attack {[currentState = neutralState and self.playersView.locationsInView->size() > 0] makeMove()}
+				Neutral -> Attack {[currentState = neutralState] detectEnemies() [ enemiesNear > 0]}
 
-				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth()}
+				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() [enemiesNear <= 0]}
 
 				Neutral -> Dead { [currentState = neutralState and ((self.health - i) <= 0)] subtractHealth()}
 
-				Attack -> Neutral { [currentState = attackState and self.playersView.locationsInView->size() = 0] subtractHealth()}
+				Attack -> Neutral { [currentState = attackState] detectEnemies() [enemiesNear <= 0]}
 
-				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth() }
+				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() }
 
 				Attack -> Dead { [currentState = attackState and ((self.health - i) <= 0)] subtractHealth()}
 
-				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() = 0] regenHealth()}
+				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and enemiesNear <= 0] regenHealth()}
 
-				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() > 0] regenHealth()}
+				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and enemiesNear > 0] regenHealth()}
 
 				Panic -> Dead { [currentState = panicState and ((self.health - i) <= 0)] subtractHealth()}
 			end	
 		end
 
+class FPSPlayer < Character
+end
 
 class PlayerState
 	operations
@@ -81,6 +88,16 @@ class PlayerState
 
 		makeMove()
 		begin
+		end
+
+		detectEnemies()
+		begin
+			self.enemiesNear := 0;
+			for v in self.pstate.playersView.locationsInView do
+				if v.charOnLoc->size() > 0 then
+					self.enemiesNear := self.enemiesNear + 1;
+				end
+			end
 		end
 	
 end
@@ -180,7 +197,7 @@ class Location
 		y : Integer;
 end
 
-class Opponent
+class Opponent < Character
 end
 class Level
 end
@@ -188,11 +205,11 @@ end
 
 association playerState between 
 PlayerState[*] role fpsState
-FPSPlayer [1] role pstate
+Character [1] role pstate
 end
 
 association playerView between
-FPSPlayer[1] role playerViewing
+Character[1] role playerViewing
 View[1] role playersView
 end
 
@@ -201,21 +218,12 @@ Level[1] role map
 Location[*] role locations
 end
 
-association opponentLoc between
-Location[1] role enemyLoc
-Opponent[1] role enemyOnLoc
-end
-
 association ViewLocations between
 View[0] role bogus
 Location[*] role locationsInView
 end
 
-association PlayerLocation between
-FPSPlayer[0..1] role playerOnLoc
-Location[1] role playerLocation
+association characterLocation between
+Character[0..1] role charOnLoc
+Location[1] role charLocation
 end
-
-constraints
-
---context FPSPlayer inv heche:playersView.locationsInView->includesAll(Bag{new Location(1,1)})
