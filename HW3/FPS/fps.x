@@ -11,7 +11,6 @@
 !insert (attack, player) into playerState
 !insert (dead, player) into playerState
 
-
 !create opponent : Opponent
 !create currentStateOpp : PlayerState
 !create neutralOpp : Neutral
@@ -24,7 +23,6 @@
 !insert (panicOpp, opponent) into playerState
 !insert (attackOpp, opponent) into playerState
 !insert (deadOpp, opponent) into playerState
-
 
 !create ploc : Location
 !create viewLoc : Location
@@ -40,12 +38,10 @@
 !insert (pviewOpp, viewLocOpp) into ViewLocations
 !insert (opponent, plocOpp) into characterLocation
 
-
 !player.neutralState := neutral
 !player.attackState := attack
 !player.panicState := panic
 !player.deadState := dead
-
 
 !opponent.neutralState := neutralOpp
 !opponent.attackState := attackOpp

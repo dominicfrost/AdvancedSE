@@ -67,6 +67,8 @@ class Character
 
 				Neutral -> Neutral {[currentState = neutralState] regenHealth()}
 
+				Neutral -> Neutral {[currentState = neutralState] enemyGone()}
+
 				Attack -> Neutral { [currentState = attackState] enemyGone() [enemiesNear <= 0]}
 
 				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() }
@@ -77,6 +79,8 @@ class Character
 
 				Attack -> Attack {[currentState = attackState] regenHealth()}
 
+				Attack -> Attack {[currentState = attackState] detectEnemies()}
+
 				Panic -> Neutral { [currentState = panicState and ((self.health + i) > 10) and enemiesNear <= 0] regenHealth()}
 
 				Panic -> Attack { [currentState = panicState and ((self.health + i) > 10) and enemiesNear > 0] regenHealth()}
@@ -86,6 +90,10 @@ class Character
 				Panic -> Panic {[currentState = panicState and ((self.health - i) > 0) and ((self.health - i) <= 10)] subtractHealth()}
 
 				Panic -> Panic {[currentState = panicState and ((self.health + i) > 0) and ((self.health + i) <= 10)] regenHealth()}
+
+				Panic -> Panic {[currentState = panicState] detectEnemies()}
+
+				Panic -> Panic {[currentState = panicState] enemyGone()}
 
 				Dead -> Dead {[currentState = deadState] regenHealth()}
 
@@ -128,7 +136,7 @@ class Attack < PlayerState
 		subtractHealth(i:Integer)
 		begin
 			self.pstate.health := self.pstate.health - i;
-			if self.pstate.health = 0 then
+			if self.pstate.health <= 0 then
 				self.pstate.currentState := self.pstate.deadState;
 			else if self.pstate.health <= 10 then
 				self.pstate.currentState := self.pstate.panicState;
@@ -141,6 +149,7 @@ class Attack < PlayerState
 		end
 		detectEnemies()
 		begin
+			WriteLine('You already see the enemy')
 		end
 
 		enemyGone()
@@ -156,7 +165,7 @@ class Neutral < PlayerState
 		subtractHealth(i:Integer)
 		begin
 			self.pstate.health := self.pstate.health - i;
-			if self.pstate.health = 0 then
+			if self.pstate.health <= 0 then
 				self.pstate.currentState := self.pstate.deadState;
 			else if self.pstate.health <= 10 then
 				self.pstate.currentState := self.pstate.panicState;
@@ -181,6 +190,7 @@ class Neutral < PlayerState
 
 		enemyGone()
 		begin
+			WriteLine('There was no enemy to begin with');
 		end
 end
 
@@ -189,7 +199,7 @@ class Panic < PlayerState
 		subtractHealth(i:Integer)
 		begin
 			self.pstate.health := self.pstate.health - i;
-			if self.pstate.health = 0 then
+			if self.pstate.health <= 0 then
 				self.pstate.currentState := self.pstate.deadState;
 			end;
 		end
@@ -206,12 +216,12 @@ class Panic < PlayerState
 		
 		detectEnemies()
 		begin
+			self.pstate.enemiesNear := 1;
 		end
 
 		enemyGone()
 		begin
 			self.pstate.enemiesNear := 0;
-			self.pstate.currentState := self.pstate.neutralState;
 		end
 end
 
@@ -220,21 +230,22 @@ class Dead < PlayerState
 	operations
 		subtractHealth(i:Integer)
 		begin
-			WriteLine('Player is already Dead');
+			WriteLine('Player is Dead');
 		end
 		
 		regenHealth(i : Integer)
 		begin
-			WriteLine('Player is already Dead');
+			WriteLine('Player is Dead');
 		end
 
 		detectEnemies()
 		begin
-			WriteLine('Player is already Dead');
+			WriteLine('Player is Dead');
 		end
 
 		enemyGone()
 		begin
+			WriteLine('Player is Dead');
 		end
 end
 

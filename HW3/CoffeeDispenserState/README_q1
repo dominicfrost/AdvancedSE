@@ -1,0 +1,6 @@
+1) run the x file
+2) run any of the following commands:
+ - !cd.accept(i : Integer)
+ - !cd.brew()
+ - !cd.reset()
+3) Watch the state machine update correctly
