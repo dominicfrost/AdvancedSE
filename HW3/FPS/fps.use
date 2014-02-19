@@ -1,0 +1,221 @@
+model FPSPlayer
+
+class FPSPlayer
+	attributes
+		health : Integer init = 100
+		enemiesNear : Integer init = 0
+		currentState : PlayerState
+		neutralState : Neutral
+		attackState : Attack
+		panicState : Panic
+		deadState : Dead
+
+	operations
+		initInstance()
+		begin
+			self.currentState := self.neutralState;
+		end
+		
+		subtractHealth(i: Integer)
+		begin 
+			self.currentState.subtractHealth(i);
+		end
+
+		regenHealth(i : Integer)
+		begin
+			self.currentState.regenHealth(i);
+		end
+
+		makeMove()
+		begin
+			self.currentState.makeMove();
+		end
+	
+
+	statemachines
+		psm StateMachine
+			states
+				startUp:initial
+
+				Neutral	[currentState = neutralState]
+
+				Attack	[currentState = attackState]
+
+				Panic	[currentState = panicState]
+
+				Dead	[currentState = deadState]
+
+			transitions
+				startUp -> Neutral	{create}
+
+				Neutral -> Attack {[currentState = neutralState and self.playersView.locationsInView->size() > 0] makeMove()}
+
+				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth()}
+
+				Neutral -> Dead { [currentState = neutralState and ((self.health - i) <= 0)] subtractHealth()}
+
+				Attack -> Neutral { [currentState = attackState and self.playersView.locationsInView->size() = 0] subtractHealth()}
+
+				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health + i) > 0] subtractHealth() }
+
+				Attack -> Dead { [currentState = attackState and ((self.health - i) <= 0)] subtractHealth()}
+
+				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() = 0] regenHealth()}
+
+				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and self.playersView.locationsInView->size() > 0] regenHealth()}
+
+				Panic -> Dead { [currentState = panicState and ((self.health - i) <= 0)] subtractHealth()}
+			end	
+		end
+
+
+class PlayerState
+	operations
+		subtractHealth(i: Integer)
+		begin
+		end
+
+		regenHealth(i : Integer)
+		begin
+		end
+
+		makeMove()
+		begin
+		end
+	
+end
+
+class Attack < PlayerState
+	operations
+		subtractHealth(i:Integer)
+		begin
+			self.pstate.health := self.pstate.health - i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			else if self.pstate.health <= 10 then
+				self.pstate.currentState := self.pstate.panicState;
+			end;end;
+		end
+		
+		regenHealth(i : Integer)
+		begin
+			self.pstate.health := self.pstate.health + i;
+		end
+
+		makeMove()
+		begin
+			self.pstate.makeMove();
+		end
+end
+
+class Neutral < PlayerState
+	operations
+		subtractHealth(i:Integer)
+		begin
+			self.pstate.health := self.pstate.health - i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			else if self.pstate.health <= 10 then
+				self.pstate.currentState := self.pstate.panicState;
+			end;end;
+		end
+		
+		regenHealth(i : Integer)
+		begin
+			self.pstate.health := self.pstate.health + i;
+		end
+
+		makeMove()
+		begin
+			self.pstate.makeMove();
+		end
+end
+
+class Panic < PlayerState
+	operations
+		subtractHealth(i:Integer)
+		begin
+			self.pstate.health := self.pstate.health	- i;
+			if self.pstate.health = 0 then
+				self.pstate.currentState := self.pstate.deadState;
+			end;
+		end
+		
+		regenHealth(i : Integer)
+		begin
+			self.pstate.health := self.pstate.health	+ i;
+		end
+
+		makeMove()
+		begin
+			self.pstate.makeMove();
+		end
+end
+
+
+class Dead < PlayerState
+	operations
+		subtractHealth(i:Integer)
+		begin
+			WriteLine('Player is already Dead');
+		end
+		
+		regenHealth(i : Integer)
+		begin
+			WriteLine('Player is already Dead');
+		end
+
+		makeMove()
+		begin
+			WriteLine('Player is already Dead');
+		end
+end
+
+class View
+end
+
+class Location
+	attributes
+		x : Integer;
+		y : Integer;
+end
+
+class Opponent
+end
+class Level
+end
+
+
+association playerState between 
+PlayerState[*] role fpsState
+FPSPlayer [1] role pstate
+end
+
+association playerView between
+FPSPlayer[1] role playerViewing
+View[1] role playersView
+end
+
+association locsInLevel between
+Level[1] role map
+Location[*] role locations
+end
+
+association opponentLoc between
+Location[1] role enemyLoc
+Opponent[1] role enemyOnLoc
+end
+
+association ViewLocations between
+View[0] role bogus
+Location[*] role locationsInView
+end
+
+association PlayerLocation between
+FPSPlayer[0..1] role playerOnLoc
+Location[1] role playerLocation
+end
+
+constraints
+
+--context FPSPlayer inv heche:playersView.locationsInView->includesAll(Bag{new Location(1,1)})
