@@ -92,10 +92,10 @@ class PlayerState
 
 		detectEnemies()
 		begin
-			self.enemiesNear := 0;
+			self.pstate.enemiesNear := 0;
 			for v in self.pstate.playersView.locationsInView do
 				if v.charOnLoc->size() > 0 then
-					self.enemiesNear := self.enemiesNear + 1;
+					self.pstate.enemiesNear := self.pstate.enemiesNear + 1;
 				end
 			end
 		end
