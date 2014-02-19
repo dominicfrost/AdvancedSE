@@ -1,0 +1,33 @@
+1. Create the Coffee Dispenser and all the Coffee states.
+
+	!create cd : CoffeeDispenser
+	!create noCoins : NoCoins
+	!create hasCoins : HasCoins
+	!create enoughCoins : EnoughCoins
+
+2. Add the associations back to the coffee dispenser from the different coffee states
+
+	!insert (noCoins, cd) into DispenserState
+	!insert (hasCoins, cd) into DispenserState
+	!insert (enoughCoins, cd) into DispenserState
+
+3. Initialize the variables in the Coffee Dispenser
+
+	!cd.noCoinsState := noCoins
+	!cd.hasCoinsState := hasCoins
+	!cd.enoughCoinsState := enoughCoins
+
+4. Initialize the instance of Coffee Dispenser
+	!cd.initInstance()
+
+5. Play around with accept(i: Interger), brew(), and reset() from all the different states.
+	e.g.
+		!cd.accept(20)
+		!cd.reset()
+		!cd.accept(20)
+		!cd.accept(20)
+		!cd.brew()
+		!cd.accept(100)
+		!cd.brew()
+		!cd.accept(200)
+		!cd.brew()
