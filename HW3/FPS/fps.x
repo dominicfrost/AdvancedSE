@@ -32,8 +32,6 @@
 !create ploc : Location
 !create viewLoc : Location
 !create pview : View
-!ploc.loc := 0;
-!pviewLoc := 1;
 !insert (player, pview) into playerView
 !insert (pview, viewLoc) into ViewLocations
 !insert (player, ploc) into characterLocation
@@ -42,8 +40,6 @@
 !create plocOpp : Location
 !create viewLocOpp : Location
 !create pviewOpp : View
-!plocOpp.loc := 1;
-!pviewLocOpp := 0;
 !insert (opponent, pviewOpp) into playerView
 !insert (pviewOpp, viewLocOpp) into ViewLocations
 !insert (opponent, plocOpp) into characterLocation

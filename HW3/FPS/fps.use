@@ -31,9 +31,9 @@ class Character
 			self.currentState.makeMove();
 		end
 
-		detectEnemies(c : Character)
+		detectEnemies()
 		begin
-			self.currentState.detectEnemies(c);
+			self.currentState.detectEnemies();
 		end
 	
 		enemyGone()
@@ -59,23 +59,33 @@ class Character
 
 				Neutral -> Attack {[currentState = neutralState] detectEnemies() [ enemiesNear > 0]}
 
-				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() [enemiesNear <= 0]}
+				Neutral -> Panic {[currentState = neutralState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth()}
 
 				Neutral -> Dead { [currentState = neutralState and ((self.health - i) <= 0)] subtractHealth()}
 
-				Neutral -> Neutral {[currentState = neutralState and ((self.health - i) > 10)] subtractHealth() [enemiesNear <= 0]}
+				Neutral -> Neutral {[currentState = neutralState and ((self.health - i) > 10)] subtractHealth()}
 
-				Attack -> Neutral { [currentState = attackState] detectEnemies() [enemiesNear <= 0]}
+				Neutral -> Neutral {[currentState = neutralState] regenHealth()}
+
+				Attack -> Neutral { [currentState = attackState] enemyGone() [enemiesNear <= 0]}
 
 				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() }
 
 				Attack -> Dead { [currentState = attackState and ((self.health - i) <= 0)] subtractHealth()}
+
+				Attack -> Attack {[currentState = attackState and ((self.health - i) > 10)] subtractHealth()}
+
+				Attack -> Attack {[currentState = attackState] regenHealth()}
 
 				Panic -> Neutral { [currentState = panicState and ((self.health + i) > 10) and enemiesNear <= 0] regenHealth()}
 
 				Panic -> Attack { [currentState = panicState and ((self.health + i) > 10) and enemiesNear > 0] regenHealth()}
 
 				Panic -> Dead { [currentState = panicState and ((self.health - i) <= 0)] subtractHealth()}
+
+				Panic -> Panic {[currentState = panicState and ((self.health - i) > 0) and ((self.health - i) <= 10)] subtractHealth()}
+
+				Panic -> Panic {[currentState = panicState and ((self.health + i) > 0) and ((self.health + i) <= 10)] regenHealth()}
 			end	
 		end
 
@@ -96,7 +106,7 @@ class PlayerState
 		begin
 		end
 
-		detectEnemies(c: Character)
+		detectEnemies()
 		begin
 		end
 	
@@ -121,15 +131,15 @@ class Attack < PlayerState
 		begin
 			self.pstate.health := self.pstate.health + i;
 		end
-		detectEnemies(c: Character)
+		detectEnemies()
 		begin
 		end
 
 		enemyGone()
 		begin
+			declare l : Location;
 			self.pstate.enemiesNear := 0;
-			self.pstate.playersView.locationInView.charOnLoc := null;
-			self.pstate.currentState := self.pstate.nuetralState;
+			self.pstate.currentState := self.pstate.neutralState;
 		end
 end
 
@@ -150,10 +160,9 @@ class Neutral < PlayerState
 			self.pstate.health := self.pstate.health + i;
 		end
 
-		detectEnemies(c: Character)
+		detectEnemies()
 		begin
 			self.pstate.enemiesNear := 1;
-			self.pstate.playersView.locationInView := c.charLocation;
 
 			if self.pstate.health > 10 then
 				self.pstate.currentState := self.pstate.attackState;
@@ -187,15 +196,14 @@ class Panic < PlayerState
 			end;end;
 		end
 		
-		detectEnemies(c: Character)
+		detectEnemies()
 		begin
 		end
 
 		enemyGone()
 		begin
 			self.pstate.enemiesNear := 0;
-			self.playersView.locationInView.charOnLoc := undefined;
-			self.pstate.currentState := self.pstate.nuetralState;
+			self.pstate.currentState := self.pstate.neutralState;
 		end
 end
 
@@ -212,7 +220,7 @@ class Dead < PlayerState
 			WriteLine('Player is already Dead');
 		end
 
-		detectEnemies(c: Character)
+		detectEnemies()
 		begin
 			WriteLine('Player is already Dead');
 		end
@@ -233,6 +241,10 @@ end
 class Level
 end
 
+association ViewLocations between
+View[0] role bogus
+Location[1] role locationInView
+end
 
 association playerState between 
 PlayerState[*] role fpsState
@@ -247,11 +259,6 @@ end
 association locsInLevel between
 Level[1] role map
 Location[*] role locations
-end
-
-association ViewLocations between
-View[0] role bogus
-Location[1] role locationInView
 end
 
 association characterLocation between
