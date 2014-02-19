@@ -31,11 +31,15 @@ class Character
 			self.currentState.makeMove();
 		end
 
-		detectEnemies()
+		detectEnemies(c : Character)
 		begin
-			self.currentState.detectEnemies();
+			self.currentState.detectEnemies(c);
 		end
 	
+		enemyGone()
+		begin
+			self.currentState.enemyGone();
+		end
 
 	statemachines
 		psm StateMachine
@@ -59,15 +63,17 @@ class Character
 
 				Neutral -> Dead { [currentState = neutralState and ((self.health - i) <= 0)] subtractHealth()}
 
+				Neutral -> Neutral {[currentState = neutralState and ((self.health - i) > 10)] subtractHealth() [enemiesNear <= 0]}
+
 				Attack -> Neutral { [currentState = attackState] detectEnemies() [enemiesNear <= 0]}
 
 				Attack -> Panic { [currentState = attackState and ((self.health - i) <= 10) and (self.health - i) > 0] subtractHealth() }
 
 				Attack -> Dead { [currentState = attackState and ((self.health - i) <= 0)] subtractHealth()}
 
-				Panic -> Neutral { [currentState = panicState and ((self.health + i) >= 10) and enemiesNear <= 0] regenHealth()}
+				Panic -> Neutral { [currentState = panicState and ((self.health + i) > 10) and enemiesNear <= 0] regenHealth()}
 
-				Panic -> Attack { [currentState = panicState and ((self.health + i) >= 10) and enemiesNear > 0] regenHealth()}
+				Panic -> Attack { [currentState = panicState and ((self.health + i) > 10) and enemiesNear > 0] regenHealth()}
 
 				Panic -> Dead { [currentState = panicState and ((self.health - i) <= 0)] subtractHealth()}
 			end	
@@ -90,16 +96,13 @@ class PlayerState
 		begin
 		end
 
-		detectEnemies()
+		detectEnemies(c: Character)
 		begin
-			self.pstate.enemiesNear := 0;
-			for v in self.pstate.playersView.locationsInView do
-				if v.charOnLoc->size() > 0 then
-					self.pstate.enemiesNear := self.pstate.enemiesNear + 1;
-				end
-			end
 		end
 	
+		enemyGone()
+		begin
+		end
 end
 
 class Attack < PlayerState
@@ -118,10 +121,15 @@ class Attack < PlayerState
 		begin
 			self.pstate.health := self.pstate.health + i;
 		end
-
-		makeMove()
+		detectEnemies(c: Character)
 		begin
-			self.pstate.makeMove();
+		end
+
+		enemyGone()
+		begin
+			self.pstate.enemiesNear := 0;
+			self.pstate.playersView.locationInView.charOnLoc := null;
+			self.pstate.currentState := self.pstate.nuetralState;
 		end
 end
 
@@ -142,9 +150,20 @@ class Neutral < PlayerState
 			self.pstate.health := self.pstate.health + i;
 		end
 
-		makeMove()
+		detectEnemies(c: Character)
 		begin
-			self.pstate.makeMove();
+			self.pstate.enemiesNear := 1;
+			self.pstate.playersView.locationInView := c.charLocation;
+
+			if self.pstate.health > 10 then
+				self.pstate.currentState := self.pstate.attackState;
+			else
+				self.pstate.currentState := self.pstate.panicState;
+			end;
+		end
+
+		enemyGone()
+		begin
 		end
 end
 
@@ -152,7 +171,7 @@ class Panic < PlayerState
 	operations
 		subtractHealth(i:Integer)
 		begin
-			self.pstate.health := self.pstate.health	- i;
+			self.pstate.health := self.pstate.health - i;
 			if self.pstate.health = 0 then
 				self.pstate.currentState := self.pstate.deadState;
 			end;
@@ -160,12 +179,23 @@ class Panic < PlayerState
 		
 		regenHealth(i : Integer)
 		begin
-			self.pstate.health := self.pstate.health	+ i;
+			self.pstate.health := self.pstate.health + i;
+			if self.pstate.health > 10 and self.pstate.enemiesNear <= 0 then
+				self.pstate.currentState := self.pstate.neutralState;
+			else if self.pstate.health > 10 and self.pstate.enemiesNear > 0 then
+				self.pstate.currentState := self.pstate.attackState;
+			end;end;
+		end
+		
+		detectEnemies(c: Character)
+		begin
 		end
 
-		makeMove()
+		enemyGone()
 		begin
-			self.pstate.makeMove();
+			self.pstate.enemiesNear := 0;
+			self.playersView.locationInView.charOnLoc := undefined;
+			self.pstate.currentState := self.pstate.nuetralState;
 		end
 end
 
@@ -182,9 +212,13 @@ class Dead < PlayerState
 			WriteLine('Player is already Dead');
 		end
 
-		makeMove()
+		detectEnemies(c: Character)
 		begin
 			WriteLine('Player is already Dead');
+		end
+
+		enemyGone()
+		begin
 		end
 end
 
@@ -192,9 +226,6 @@ class View
 end
 
 class Location
-	attributes
-		x : Integer;
-		y : Integer;
 end
 
 class Opponent < Character
@@ -220,7 +251,7 @@ end
 
 association ViewLocations between
 View[0] role bogus
-Location[*] role locationsInView
+Location[1] role locationInView
 end
 
 association characterLocation between

@@ -1,4 +1,4 @@
-!create cd : FPSPlayer
+!create player : FPSPlayer
 !create currentState : PlayerState
 !create neutral : Neutral
 !create panic : Panic
@@ -6,38 +6,59 @@
 !create dead : Dead
 
 -- association between states back to the coffe dispenser
-!insert (currentState, cd) into playerState
-!insert (neutral, cd) into playerState
-!insert (panic, cd) into playerState
-!insert (attack, cd) into playerState
-!insert (dead, cd) into playerState
+!insert (currentState, player) into playerState
+!insert (neutral, player) into playerState
+!insert (panic, player) into playerState
+!insert (attack, player) into playerState
+!insert (dead, player) into playerState
+
+
+!create opponent : Opponent
+!create currentStateOpp : PlayerState
+!create neutralOpp : Neutral
+!create panicOpp : Panic
+!create attackOpp : Attack
+!create deadOpp : Dead
+
+-- association between states back to the coffe dispenser
+!insert (currentStateOpp, opponent) into playerState
+!insert (neutralOpp, opponent) into playerState
+!insert (panicOpp, opponent) into playerState
+!insert (attackOpp, opponent) into playerState
+!insert (deadOpp, opponent) into playerState
+
 
 --create the players current position and the locations it can view
 !create ploc : Location
-!create viewLoc1 : Location
-!create viewLoc2 : Location
-!create viewLoc3 : Location
---why doesnt this work???
-!ploc.x := 3
-!ploc.y := 3
-!viewLoc1.x := 2
-!viewLoc1.y := 4
-!viewLoc2.x := 3
-!viewLoc2.y := 4
-!viewLoc3.x := 4
-!viewLoc3.y := 4
-
-
+!create viewLoc : Location
 !create pview : View
-!insert (cd, pview) into playerView
-!insert (pview, viewLoc1) into ViewLocations
-!insert (pview, viewLoc2) into ViewLocations
-!insert (pview, viewLoc3) into ViewLocations
+!ploc.loc := 0;
+!pviewLoc := 1;
+!insert (player, pview) into playerView
+!insert (pview, viewLoc) into ViewLocations
+!insert (player, ploc) into characterLocation
+
+--create the players current position and the locations it can view
+!create plocOpp : Location
+!create viewLocOpp : Location
+!create pviewOpp : View
+!plocOpp.loc := 1;
+!pviewLocOpp := 0;
+!insert (opponent, pviewOpp) into playerView
+!insert (pviewOpp, viewLocOpp) into ViewLocations
+!insert (opponent, plocOpp) into characterLocation
 
 
-!cd.neutralState := neutral
-!cd.attackState := attack
-!cd.panicState := panic
-!cd.deadState := dead
+!player.neutralState := neutral
+!player.attackState := attack
+!player.panicState := panic
+!player.deadState := dead
 
-!cd.initInstance()
+
+!opponent.neutralState := neutralOpp
+!opponent.attackState := attackOpp
+!opponent.panicState := panicOpp
+!opponent.deadState := deadOpp
+
+!player.initInstance()
+!opponent.initInstance()
