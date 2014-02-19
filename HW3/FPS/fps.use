@@ -82,9 +82,6 @@ class Character
 class FPSPlayer < Character
 end
 
-class Opponent < Character
-end
-
 class PlayerState
 	operations
 		subtractHealth(i: Integer)
@@ -131,7 +128,8 @@ class Attack < PlayerState
 		enemyGone()
 		begin
 			self.pstate.enemiesNear := 0;
-			self.pstate.currentState := self.pstate.neutralState;
+			self.pstate.playersView.locationInView.charOnLoc := null;
+			self.pstate.currentState := self.pstate.nuetralState;
 		end
 end
 
@@ -155,6 +153,7 @@ class Neutral < PlayerState
 		detectEnemies(c: Character)
 		begin
 			self.pstate.enemiesNear := 1;
+			self.pstate.playersView.locationInView := c.charLocation;
 
 			if self.pstate.health > 10 then
 				self.pstate.currentState := self.pstate.attackState;
@@ -195,7 +194,8 @@ class Panic < PlayerState
 		enemyGone()
 		begin
 			self.pstate.enemiesNear := 0;
-			self.pstate.currentState := self.pstate.neutralState;
+			self.playersView.locationInView.charOnLoc := undefined;
+			self.pstate.currentState := self.pstate.nuetralState;
 		end
 end
 
@@ -228,6 +228,8 @@ end
 class Location
 end
 
+class Opponent < Character
+end
 class Level
 end
 
